@@ -11,6 +11,8 @@ import Foundation
 var aValue: Int = 1
 var bValue: Int = 2
 var cValue: Int = 3
+var dValue: Int = 4
+var number: Int = 0
 var rootDiscriminant: Double = 0
 
 // Functions
@@ -47,17 +49,6 @@ func getRootType() -> String {
     }
 }
 
-func getFactors(_ number: Int) -> [String] {
-    var factors: [String] = []
-    for i in 1...abs(number) {
-        if number % i == 0 {
-            factors.append(String(i))
-            factors.append(String(-i))
-        }
-    }
-    return factors
-}
-
 func quadraticEquation() -> [Any]? {
     rootDiscriminant = pow(Double(bValue), 2) - (4 * Double(aValue) * Double(cValue))
     
@@ -89,14 +80,63 @@ func quadraticImaginary() -> [String] {
     return [equation, denominator]
 }
 
-func calculateFoil(_ a: Int, _ b: Int, _ c: Int, _ d: Int) -> [Double] {
-    aValue = a * c
-    bValue = (a * d) + (c * b)
-    cValue = b * d
+func getFactors(_ num: String) -> [String] {
+    
+    if let numValid = validateInput(num) {
+        number = numValid
+    } else {
+        return ["Invalid Input"]
+    }
+    
+    var factors: [String] = []
+    for i in 1...abs(number) {
+        if number % i == 0 {
+            factors.append(String(i))
+            factors.append(String(-i))
+        }
+    }
+    return factors
+}
+
+func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> [String] {
+    
+    var finalA: String = ""
+    var finalB: String = ""
+    var finalC: String = ""
+    
+    if  let aValid = validateInput(a),
+        let bValid = validateInput(b),
+        let cValid = validateInput(c),
+        let dValid = validateInput(d) {
+        aValue = aValid
+        bValue = bValid
+        cValue = cValid
+        dValue = dValid
+    } else {
+        return ["Invalid Input(s)"]
+    }
+
+    aValue = aValue * cValue
+    bValue = (aValue * dValue) + (cValue * bValue)
+    cValue = bValue * dValue
+    
+    finalA = String(round(Double(aValue) * 100) / 100) + "x^2"
+    
+    if (bValue < 0) {
+        finalB = " - " + String(abs(round(Double(bValue) * 100) / 100)) + "x"
+    } else {
+        finalB = " + " + String(round(Double(bValue) * 100) / 100) + "x"
+    }
+    
+    if (cValue < 0) {
+        finalC = " - " + String(abs(round(Double(cValue) * 100) / 100))
+    } else {
+        finalC = " + " + String(round(Double(cValue) * 100) / 100)
+    }
     
     return [
-        round(Double(aValue) * 100) / 100,
-        round(Double(bValue) * 100) / 100,
-        round(Double(cValue) * 100) / 100
+        finalA,
+        finalB,
+        finalC
     ]
 }
