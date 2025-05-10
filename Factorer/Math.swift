@@ -27,33 +27,25 @@ func validateInput(_ value: Any) -> Int? {
     return nil
 }
 
-func setValues(_ a: Any, _ b: Any, _ c: Any) -> String? {
-    if let aValid = validateInput(a),
-       let bValid = validateInput(b),
-       let cValid = validateInput(c) {
+func quadraticEquation(_ a: String, _ b: String, _ c: String) -> [String] {
+    
+    var ansOne: String = ""
+    var ansTwo: String = ""
+    
+    if  let aValid = validateInput(a),
+        let bValid = validateInput(b),
+        let cValid = validateInput(c) {
         aValue = aValid
         bValue = bValid
         cValue = cValid
-        return nil
     } else {
-        return "e"
+        return ["Invalid Input(s)"]
     }
-}
-
-func getRootType() -> String {
-    rootDiscriminant = pow(Double(bValue), 2) - (4 * Double(aValue) * Double(cValue))
-    if rootDiscriminant >= 0 {
-        return "r"
-    } else {
-        return "i"
-    }
-}
-
-func quadraticEquation() -> [Any]? {
+    
     rootDiscriminant = pow(Double(bValue), 2) - (4 * Double(aValue) * Double(cValue))
     
-    if getRootType() == "i" {
-        return quadraticImaginary()
+    if rootDiscriminant < 0 {
+        return quadraticImaginary(rootDiscriminant)
     }
     
     let sqrtDiscriminant = sqrt(rootDiscriminant)
@@ -63,10 +55,29 @@ func quadraticEquation() -> [Any]? {
     let finalRootPositive = equationTopPositive / (2 * Double(aValue))
     let finalRootNegative = equationTopNegative / (2 * Double(aValue))
     
-    return [round(finalRootPositive * 100) / 100, round(finalRootNegative * 100) / 100]
+    if(finalRootPositive > 0) {
+        ansOne = "x = " + String(round(finalRootPositive * 100) / 100)
+    } else if(finalRootPositive == 0){
+        ansOne = "x = 0"
+    } else {
+        ansOne = "x = -" + String(abs(round(finalRootPositive * 100) / 100))
+    }
+    
+    if(finalRootNegative > 0) {
+        ansTwo = "x = " + String(round(finalRootNegative * 100) / 100)
+    } else if(finalRootPositive == 0){
+        ansTwo = "x = 0"
+    } else {
+        ansTwo = "x = -" + String(abs(round(finalRootNegative * 100) / 100))
+    }
+    
+    return [ansOne, ansTwo]
 }
 
-func quadraticImaginary() -> [String] {
+func quadraticImaginary(_ rootDiscriminant: Double) -> [String] {
+    
+    var finalAns: String = ""
+    
     let absDiscriminant = abs(rootDiscriminant)
     let imaginaryPart = "i√\(round(absDiscriminant * 100) / 100)"
     
@@ -77,7 +88,9 @@ func quadraticImaginary() -> [String] {
     let equation = "(\(checkB(bValue))±\(imaginaryPart))"
     let denominator = String(round(2 * Double(aValue) * 100) / 100)
     
-    return [equation, denominator]
+    finalAns = "x = " + equation + "/" + denominator
+    
+    return [finalAns]
 }
 
 func getFactors(_ num: String) -> [String] {

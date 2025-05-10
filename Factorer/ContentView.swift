@@ -14,15 +14,20 @@ enum Math: String, CaseIterable {
 
 struct ContentView: View {
     @State var selection: Math = .Factor
+    
     @State private var number = ""
     @State private var answerFactor: [String] = []
-    @State private var aValue: String = ""
-    @State private var bValue: String = ""
-    @State private var cValue: String = ""
-    @State private var dValue: String = ""
-    @State private var answerQuad: String = ""
+    
+    @State private var aValueQuad: String = ""
+    @State private var bValueQuad: String = ""
+    @State private var cValueQuad: String = ""
+    @State private var answerQuad: [String] = []
+    
+    @State private var aValueFoil: String = ""
+    @State private var bValueFoil: String = ""
+    @State private var cValueFoil: String = ""
+    @State private var dValueFoil: String = ""
     @State private var answerFoil: [String] = []
-
     
     var body: some View {
         VStack {
@@ -53,7 +58,7 @@ struct ContentView: View {
                     .font(.system(size: 20))
                     .padding(20)
                 
-                TextField("A Value", text: $aValue)
+                TextField("A Value", text: $aValueQuad)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.purple)
                       .background(.gray.opacity(0.2))
@@ -61,7 +66,7 @@ struct ContentView: View {
                       .padding(.horizontal, 50)
                       .padding(.vertical, 15)
                 
-                TextField("B Value", text: $bValue)
+                TextField("B Value", text: $bValueQuad)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.purple)
                       .background(.gray.opacity(0.2))
@@ -70,7 +75,7 @@ struct ContentView: View {
                       .padding(.vertical, 15)
 
                 
-                TextField("C Value", text: $cValue)
+                TextField("C Value", text: $cValueQuad)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.purple)
                       .background(.gray.opacity(0.2))
@@ -78,11 +83,19 @@ struct ContentView: View {
                       .padding(.horizontal, 50)
                       .padding(.vertical, 15)
                 
+                Button("Get Answer", action: {
+                    answerQuad = quadraticEquation(aValueQuad, bValueQuad, cValueQuad)
+                })
+                    .buttonStyle(.bordered)
+                    .cornerRadius(50)
+                    .padding(.vertical, 2)
+                
                 Text("The factored form is...")
                     .font(.system(size: 20))
                     .padding(20)
                 
-                Text(answerQuad)
+                Text(answerQuad.joined(separator: " , "))
+                    .font(.system(size: 25))
                     .fontDesign(.rounded)
                     .foregroundColor(.blue)
                     .multilineTextAlignment(.center)
@@ -103,6 +116,7 @@ struct ContentView: View {
                 
                 Button("Get Answer", action: {
                     answerFactor = getFactors(number)
+                    UIApplication.shared.endEditing()
                 })
                     .buttonStyle(.bordered)
                     .cornerRadius(50)
@@ -123,7 +137,7 @@ struct ContentView: View {
                     .font(.system(size: 20))
                     .padding(20)
                 
-                TextField("A Value", text: $aValue)
+                TextField("A Value", text: $aValueFoil)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.purple)
                       .background(.gray.opacity(0.2))
@@ -131,7 +145,7 @@ struct ContentView: View {
                       .padding(.horizontal, 50)
                       .padding(.vertical, 15)
                 
-                TextField("B Value", text: $bValue)
+                TextField("B Value", text: $bValueFoil)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.purple)
                       .background(.gray.opacity(0.2))
@@ -139,7 +153,7 @@ struct ContentView: View {
                       .padding(.horizontal, 50)
                       .padding(.vertical, 15)
                 
-                TextField("C Value", text: $cValue)
+                TextField("C Value", text: $cValueFoil)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.purple)
                       .background(.gray.opacity(0.2))
@@ -147,7 +161,7 @@ struct ContentView: View {
                       .padding(.horizontal, 50)
                       .padding(.vertical, 15)
                 
-                TextField("D Value", text: $dValue)
+                TextField("D Value", text: $dValueFoil)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.purple)
                       .background(.gray.opacity(0.2))
@@ -156,7 +170,7 @@ struct ContentView: View {
                       .padding(.vertical, 15)
                 
                 Button("Get Answer", action: {
-                    answerFoil = calculateFoil(aValue, bValue, cValue, dValue)
+                    answerFoil = calculateFoil(aValueFoil, bValueFoil, cValueFoil, dValueFoil)
                 })
                     .buttonStyle(.bordered)
                     .cornerRadius(50)
@@ -175,6 +189,12 @@ struct ContentView: View {
             
             Spacer()
         }
+    }
+}
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
