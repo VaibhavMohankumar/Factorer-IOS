@@ -133,7 +133,7 @@ func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> [Strin
     bValue = (aValue * dValue) + (cValue * bValue)
     cValue = bValue * dValue
     
-    finalA = String(round(Double(aValue) * 100) / 100) + "x^2"
+    finalA = String(round(Double(aValue) * 100) / 100) + "x\u{00B2}"
     
     if (bValue < 0) {
         finalB = " - " + String(abs(round(Double(bValue) * 100) / 100)) + "x"

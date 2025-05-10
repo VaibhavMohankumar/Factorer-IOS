@@ -70,7 +70,7 @@ struct ContentView: View {
             switch selection {
                 
             case .Quadratic:
-                Text("Enter Quadratic in form Ax^2+Bx+C")
+                Text("Enter Quadratic in form Ax\u{00B2}+Bx+C")
                     .font(.system(size: 20))
                     .padding(20)
                 
