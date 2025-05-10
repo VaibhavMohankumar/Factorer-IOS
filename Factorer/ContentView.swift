@@ -101,6 +101,7 @@ struct ContentView: View {
                 
                 Button("Get Answer", action: {
                     answerQuad = quadraticEquation(aValueQuad, bValueQuad, cValueQuad)
+                    UIApplication.shared.endEditing()
                 })
                     .buttonStyle(.bordered)
                     .cornerRadius(50)
@@ -122,7 +123,7 @@ struct ContentView: View {
                     .font(.system(size: 20))
                     .padding(20)
                 
-                TextField("Enter the number to factor", text: $number)
+                TextField("Enter the integer to factor", text: $number)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.purple)
                       .background(.gray.opacity(0.2))

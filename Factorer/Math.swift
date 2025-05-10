@@ -8,21 +8,20 @@
 import Foundation
 
 // Setup
-var aValue: Int = 1
-var bValue: Int = 2
-var cValue: Int = 3
-var dValue: Int = 4
+var aValue: Double = 1
+var bValue: Double = 2
+var cValue: Double = 3
+var dValue: Double = 4
 var number: Int = 0
-var rootDiscriminant: Double = 0
 
 // Functions
 
-func validateInput(_ value: Any) -> Int? {
-    if let intValue = value as? Int {
-        return intValue
+func validateInput(_ value: Any) -> Double? {
+    if let doubleValue = value as? Double {
+        return doubleValue
     }
-    if let stringValue = value as? String, let intValue = Int(stringValue) {
-        return intValue
+    if let stringValue = value as? String, let doubleValue = Double(stringValue) {
+        return doubleValue
     }
     return nil
 }
@@ -42,7 +41,7 @@ func quadraticEquation(_ a: String, _ b: String, _ c: String) -> [String] {
         return ["Invalid Input(s)"]
     }
     
-    rootDiscriminant = pow(Double(bValue), 2) - (4 * Double(aValue) * Double(cValue))
+    let rootDiscriminant = pow(Double(bValue), 2) - (4 * Double(aValue) * Double(cValue))
     
     if rootDiscriminant < 0 {
         return quadraticImaginary(rootDiscriminant)
@@ -81,7 +80,7 @@ func quadraticImaginary(_ rootDiscriminant: Double) -> [String] {
     let absDiscriminant = abs(rootDiscriminant)
     let imaginaryPart = "i√\(round(absDiscriminant * 100) / 100)"
     
-    func checkB(_ b: Int) -> String {
+    func checkB(_ b: Double) -> String {
         return b == 0 ? "" : String(-b)
     }
     
@@ -96,7 +95,7 @@ func quadraticImaginary(_ rootDiscriminant: Double) -> [String] {
 func getFactors(_ num: String) -> [String] {
     
     if let numValid = validateInput(num) {
-        number = numValid
+        number = Int(numValid)
     } else {
         return ["Invalid Input"]
     }
@@ -147,9 +146,5 @@ func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> [Strin
         finalC = " + " + String(round(Double(cValue) * 100) / 100)
     }
     
-    return [
-        finalA,
-        finalB,
-        finalC
-    ]
+    return [finalA, finalB, finalC]
 }
