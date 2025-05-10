@@ -50,6 +50,22 @@ struct ContentView: View {
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, 15)
+            .onChange(of: selection) {
+                // Clear all variables
+                number = ""
+                answerFactor = []
+                
+                aValueQuad = ""
+                bValueQuad = ""
+                cValueQuad = ""
+                answerQuad = []
+                
+                aValueFoil = ""
+                bValueFoil = ""
+                cValueFoil = ""
+                dValueFoil = ""
+                answerFoil = []
+            }
             
             switch selection {
                 
@@ -127,6 +143,7 @@ struct ContentView: View {
                     .padding(20)
                 
                 Text(answerFactor.joined(separator: ", "))
+                    .font(.system(size: 20))
                     .fontDesign(.rounded)
                     .foregroundColor(.blue)
                     .multilineTextAlignment(.center)
@@ -181,6 +198,7 @@ struct ContentView: View {
                     .padding(10)
                 
                 Text(answerFoil.joined(separator: ""))
+                    .font(.system(size: 23))
                     .fontDesign(.rounded)
                     .foregroundColor(.blue)
                     .multilineTextAlignment(.center)
