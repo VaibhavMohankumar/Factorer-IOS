@@ -26,7 +26,7 @@ func validateInput(_ value: Any) -> Double? {
     return nil
 }
 
-func quadraticEquation(_ a: String, _ b: String, _ c: String) -> [String] {
+func calculateQuadratic(_ a: String, _ b: String, _ c: String) -> [String] {
     
     var ansOne: String = ""
     var ansTwo: String = ""
@@ -41,10 +41,14 @@ func quadraticEquation(_ a: String, _ b: String, _ c: String) -> [String] {
         return ["Invalid Input(s)"]
     }
     
+    if (aValue == 0) {
+        return ["A value cannot be 0"]
+    }
+    
     let rootDiscriminant = pow(Double(bValue), 2) - (4 * Double(aValue) * Double(cValue))
     
     if rootDiscriminant < 0 {
-        return quadraticImaginary(rootDiscriminant)
+        return calculateQuadraticImaginary(rootDiscriminant)
     }
     
     let sqrtDiscriminant = sqrt(rootDiscriminant)
@@ -73,7 +77,7 @@ func quadraticEquation(_ a: String, _ b: String, _ c: String) -> [String] {
     return [ansOne, ansTwo]
 }
 
-func quadraticImaginary(_ rootDiscriminant: Double) -> [String] {
+func calculateQuadraticImaginary(_ rootDiscriminant: Double) -> [String] {
     
     var finalAns: String = ""
     
@@ -92,7 +96,7 @@ func quadraticImaginary(_ rootDiscriminant: Double) -> [String] {
     return [finalAns]
 }
 
-func getFactors(_ num: String) -> [String] {
+func calculateFactors(_ num: String) -> [String] {
     
     if let numValid = validateInput(num) {
         number = Int(numValid)
@@ -100,11 +104,17 @@ func getFactors(_ num: String) -> [String] {
         return ["Invalid Input"]
     }
     
+    if (number == 0) {
+        return ["No Factors"]
+    }
+    
     var factors: [String] = []
     for i in 1...abs(number) {
         if number % i == 0 {
             factors.append(String(i))
-            factors.append(String(-i))
+            if number < 0 {
+                factors.append(String(-i))
+            }
         }
     }
     return factors
@@ -126,6 +136,14 @@ func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> [Strin
         dValue = dValid
     } else {
         return ["Invalid Input(s)"]
+    }
+    
+    if (aValue == 0 && cValue == 0) {
+        return ["A and C values cannot be 0"]
+    } else if(aValue == 0){
+        return ["A value cannot be 0"]
+    } else if (cValue == 0){
+        return ["C value cannot be 0"]
     }
 
     aValue = aValue * cValue
