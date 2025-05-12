@@ -211,6 +211,7 @@ struct ContentView: View {
                     
                     Button("Get Answer", action: {
                         answerFoil = calculateFoil(aValueFoil, bValueFoil, cValueFoil, dValueFoil)
+                        UIApplication.shared.endEditing()
                     })
                     .fontDesign(.serif)
                     .fontWeight(.semibold)
