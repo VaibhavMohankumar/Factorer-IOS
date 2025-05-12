@@ -33,9 +33,6 @@ func calculateFactorsInteger(_ num: Int) -> [Int] {
     for i in 1...abs(num) {
         if num % i == 0 {
             factors.append(i)
-            if num < 0 {
-                factors.append(-i)
-            }
         }
     }
     return factors
@@ -179,8 +176,57 @@ func calculateFactorsString(_ num: String) -> [String] {
 }
 
 func calculateLcm(_ numOne: String, _ numTwo: String) -> String {
-    var finalAns: String = ""
-    return finalAns
+    var lcmOne: Int = 0;var lcmTwo: Int = 0
+    var lcmOneFactors: [Int] = []
+    var lcmTwoFactors: [Int] = []
+    
+    if let numOneValid = validateInput(numOne),
+       let numTwoValid = validateInput(numTwo) {
+        lcmOne = Int(numOneValid)
+        lcmTwo = Int(numTwoValid)
+    } else {
+        return "Invalid Input(s)"
+    }
+    
+    if (lcmOne == 0 || lcmTwo == 0) {
+        return "No LCM"
+    } else if (lcmOne < 0 || lcmTwo < 0) {
+        return "Integer(s) must be positive"
+    } else if (lcmOne == lcmTwo) {
+        return String(lcmOne)
+    }
+    
+    lcmOneFactors = calculateFactorsInteger(lcmOne)
+    lcmTwoFactors = calculateFactorsInteger(lcmTwo)
+    
+    if (lcmOne != 1 && lcmTwo != 1) {
+         if (lcmOneFactors[1] != lcmTwoFactors[1] && lcmOneFactors.count == lcmTwoFactors.count){
+            return String(lcmOne * lcmTwo)
+        }
+    }
+    
+    var lcmOneSum: Int = lcmOne;var lcmTwoSum: Int = lcmTwo
+    var flag: Bool = false
+    
+    while(!flag) {
+        while(lcmOneSum < lcmTwoSum) {
+            lcmOneSum += lcmOne
+        }
+        
+        if(lcmOneSum == lcmTwoSum) {
+            flag = true
+            return String(lcmOneSum)
+        }
+        
+        while (lcmTwoSum < lcmOneSum) {
+            lcmTwoSum += lcmTwo
+        }
+        
+        if(lcmOneSum == lcmTwoSum) {
+            flag = true
+            return String(lcmOneSum)
+        }
+    }
 }
 
 func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> [String] {
@@ -208,7 +254,7 @@ func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> [Strin
     } else if (cValue == 0){
         return ["C value cannot be 0"]
     }
-
+    
     aValue = aValue * cValue
     bValue = (aValue * dValue) + (cValue * bValue)
     cValue = bValue * dValue
