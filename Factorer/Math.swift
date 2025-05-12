@@ -26,6 +26,21 @@ func validateInput(_ value: Any) -> Double? {
     return nil
 }
 
+func calculateFactorsInteger(_ num: Int) -> [Int] {
+    
+    var factors: [Int] = []
+    
+    for i in 1...abs(num) {
+        if num % i == 0 {
+            factors.append(i)
+            if num < 0 {
+                factors.append(-i)
+            }
+        }
+    }
+    return factors
+}
+
 func calculateQuadratic(_ a: String, _ b: String, _ c: String) -> [String] {
     
     var ansOne: String = ""
@@ -96,7 +111,49 @@ func calculateQuadraticImaginary(_ rootDiscriminant: Double) -> [String] {
     return [finalAns]
 }
 
-func calculateFactors(_ num: String) -> [String] {
+func calculateGcf(_ numOne: String, _ numTwo: String) -> String {
+    var gcfOne: Int = 0;var gcfTwo: Int = 0
+    var gcfOneFactors: [Int] = []
+    var gcfTwoFactors: [Int] = []
+    
+    if let numOneValid = validateInput(numOne),
+       let numTwoValid = validateInput(numTwo) {
+        gcfOne = Int(numOneValid)
+        gcfTwo = Int(numTwoValid)
+    } else {
+        return "Invalid Input(s)"
+    }
+    
+    if (gcfOne == 0 || gcfTwo == 0) {
+        return "No GCF"
+    } else if (gcfOne < 0 || gcfTwo < 0) {
+        return "Integer(s) must be positive"
+    }
+    
+    gcfOneFactors = calculateFactorsInteger(gcfOne)
+    gcfTwoFactors = calculateFactorsInteger(gcfTwo)
+    
+    var commonFactors: [Int] = []
+    for factorOne in gcfOneFactors {
+        for factorTwo in gcfTwoFactors {
+            if factorOne == factorTwo {
+                commonFactors.append(factorOne)
+            }
+        }
+    }
+    
+    var tempNum: Int = commonFactors[0]
+    
+    for num in commonFactors {
+        if num > tempNum {
+            tempNum = num
+        }
+    }
+    
+    return String(tempNum)
+}
+
+func calculateFactorsString(_ num: String) -> [String] {
     
     if let numValid = validateInput(num) {
         number = Int(numValid)
@@ -109,6 +166,7 @@ func calculateFactors(_ num: String) -> [String] {
     }
     
     var factors: [String] = []
+    
     for i in 1...abs(number) {
         if number % i == 0 {
             factors.append(String(i))
@@ -118,6 +176,11 @@ func calculateFactors(_ num: String) -> [String] {
         }
     }
     return factors
+}
+
+func calculateLcm(_ numOne: String, _ numTwo: String) -> String {
+    var finalAns: String = ""
+    return finalAns
 }
 
 func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> [String] {
