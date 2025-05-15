@@ -20,27 +20,11 @@ struct ContentView: View {
     @State var selectionMain: Math = .General
     @State var selectionGeneral: General = .Factor
     
-    @State private var aValueQuad: String = ""
-    @State private var bValueQuad: String = ""
-    @State private var cValueQuad: String = ""
-    @State private var answerQuad: [String] = []
-    
-    @State private var numberGcfOne: String = ""
-    @State private var numberGcfTwo: String = ""
-    @State private var answerGcf: String = ""
-    
-    @State private var numberFactor: String = ""
-    @State private var answerFactor: [String] = []
-    
-    @State private var numberLcmOne: String = ""
-    @State private var numberLcmTwo: String = ""
-    @State private var answerLcm: String = ""
-    
-    @State private var aValueFoil: String = ""
-    @State private var bValueFoil: String = ""
-    @State private var cValueFoil: String = ""
-    @State private var dValueFoil: String = ""
-    @State private var answerFoil: [String] = []
+    @State private var textOne: String = ""
+    @State private var textTwo: String = ""
+    @State private var textThree: String = ""
+    @State private var textFour: String = ""
+    @State private var answer: String = ""
     
     var body: some View {
         ScrollView {
@@ -49,7 +33,6 @@ struct ContentView: View {
                     .font(.system(size: 80))
                     .fontDesign(.rounded)
                     .bold(true)
-                    .frame(maxWidth: .infinity, alignment: .top)
                     .padding(.bottom, 1)
                 
                 if (selectionMain == Math.Quadratic || selectionMain == Math.FOIL) {
@@ -74,80 +57,29 @@ struct ContentView: View {
                 .onChange(of: selectionMain) {
                     selectionGeneral = General.Factor
                     // Clear all variables
-                    numberFactor = ""
-                    answerFactor = []
-                    
-                    aValueQuad = ""
-                    bValueQuad = ""
-                    cValueQuad = ""
-                    answerQuad = []
-                    
-                    aValueFoil = ""
-                    bValueFoil = ""
-                    cValueFoil = ""
-                    dValueFoil = ""
-                    answerFoil = []
+                    textOne = ""
+                    textTwo = ""
+                    textThree = ""
+                    textFour = ""
+                    answer = ""
                 }
                 
                 switch selectionMain {
                     
                 case .Quadratic:
-                    Text("Enter Quadratic in form Ax\u{00B2}+Bx+C")
-                        .font(.system(size: 20))
-                        .fontDesign(.serif)
-                        .padding(.horizontal, 0)
-                        .padding(.vertical, 20)
+                    text("Enter Quadratic in form Ax\u{00B2}+Bx+C", 20, 20, 20)
                     
-                    TextField("A Value", text: $aValueQuad)
-                        .fontDesign(.monospaced)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.purple)
-                        .background(.gray.opacity(0.2))
-                        .cornerRadius(50)
-                        .padding(.horizontal, 50)
-                        .padding(.vertical, 15)
-                    
-                    TextField("B Value", text: $bValueQuad)
-                        .fontDesign(.monospaced)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.purple)
-                        .background(.gray.opacity(0.2))
-                        .cornerRadius(50)
-                        .padding(.horizontal, 50)
-                        .padding(.vertical, 15)
-                    
-                    
-                    TextField("C Value", text: $cValueQuad)
-                        .fontDesign(.monospaced)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.purple)
-                        .background(.gray.opacity(0.2))
-                        .cornerRadius(50)
-                        .padding(.horizontal, 50)
-                        .padding(.vertical, 15)
-                    
-                    Button("Get Answer", action: {
-                        answerQuad = calculateQuadratic(aValueQuad, bValueQuad, cValueQuad)
+                    textBox("A Value", $textOne, 50, 15)
+                    textBox("B Value", $textTwo, 50, 15)
+                    textBox("C Value", $textThree, 50, 15)
+                   
+                    button({
+                        answer = calculateQuadratic(textOne, textTwo, textThree)
                         UIApplication.shared.endEditing()
                     })
-                    .fontDesign(.serif)
-                    .fontWeight(.semibold)
-                    .buttonStyle(.bordered)
-                    .cornerRadius(50)
-                    .padding(.vertical, 2)
                     
-                    Text("The factored form is...")
-                        .fontDesign(.serif)
-                        .font(.system(size: 20))
-                        .padding(20)
-                    
-                    Text(answerQuad.joined(separator: " , "))
-                        .fontDesign(.monospaced)
-                        .font(.system(size: 22))
-                        .fontDesign(.rounded)
-                        .foregroundColor(.blue)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
+                    text("The factored form is...", 20, 20, 20)
+                    answerBox(answer, 22)
                     
                 case .General:
                     Picker("Select General function", selection: $selectionGeneral) {
@@ -160,231 +92,79 @@ struct ContentView: View {
                     .padding(.vertical, 15)
                     .onChange(of: selectionGeneral) {
                         // Clear all variables
-                        numberGcfOne = ""
-                        numberGcfTwo = ""
-                        answerGcf = ""
-                        
-                        numberFactor = ""
-                        answerFactor = []
-                        
-                        numberLcmOne = ""
-                        numberLcmTwo = ""
-                        answerLcm = ""
+                        textOne = ""
+                        textTwo = ""
+                        textThree = ""
+                        textFour = ""
+                        answer = ""
                     }
                     
                     switch selectionGeneral {
                         
                     case .GCF:
-                        Text("Get Greatest Common Factor of")
-                            .fontDesign(.serif)
-                            .font(.system(size: 20))
-                            .padding(20)
+                        text("Get Greatest Common Factor of", 20, 20, 20)
+                        
                         HStack {
-                            TextField("Integer One", text: $numberGcfOne)
-                                .fontDesign(.monospaced)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.purple)
-                                .background(.gray.opacity(0.2))
-                                .cornerRadius(50)
-                                .padding(.horizontal, 15)
-                                .padding(.vertical, 15)
-                            
-                            Text("and")
-                                .fontDesign(.serif)
-                                .font(.system(size: 20))
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, -15)
-                            
-                            TextField("Integer Two", text: $numberGcfTwo)
-                                .fontDesign(.monospaced)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.purple)
-                                .background(.gray.opacity(0.2))
-                                .cornerRadius(50)
-                                .padding(.horizontal, 15)
-                                .padding(.vertical, 15)
+                            textBox("Integer One", $textOne, 15, 15)
+                            text("and", 20, -15, 16)
+                            textBox("Integer Two", $textTwo, 15, 15)
                         }
                         
-                        Button("Get Answer", action: {
-                            answerGcf = calculateGcf(numberGcfOne, numberGcfTwo)
+                        button({
+                            answer = calculateGcf(textOne, textTwo)
                             UIApplication.shared.endEditing()
                         })
-                        .fontDesign(.serif)
-                        .fontWeight(.semibold)
-                        .buttonStyle(.bordered)
-                        .cornerRadius(50)
-                        .padding(.vertical, 2)
                         
-                        Text("The Greatest Common Factor is...")
-                            .fontDesign(.serif)
-                            .font(.system(size: 20))
-                            .padding(20)
-                        
-                        Text(answerGcf)
-                            .fontDesign(.monospaced)
-                            .font(.system(size: 20))
-                            .fontDesign(.rounded)
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
+                        text("The Greatest Common Factor is...", 20, 20 , 20)
+                        answerBox(answer, 20)
                         
                     case .Factor:
-                        Text("Get factors of")
-                            .fontDesign(.serif)
-                            .font(.system(size: 20))
-                            .padding(20)
+                        text("Get factors of", 20, 20, 20)
                         
-                        TextField("Enter the integer to factor", text: $numberFactor)
-                            .fontDesign(.monospaced)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.purple)
-                            .background(.gray.opacity(0.2))
-                            .cornerRadius(50)
-                            .padding(.horizontal, 30)
-                            .padding(.vertical, 15)
+                        textBox("Enter the Integer to factor", $textOne, 30, 15)
                         
-                        Button("Get Answer", action: {
-                            answerFactor = calculateFactorsString(numberFactor)
+                        button({
+                            answer = calculateFactorsString(textOne)
                             UIApplication.shared.endEditing()
                         })
-                        .fontDesign(.serif)
-                        .fontWeight(.semibold)
-                        .buttonStyle(.bordered)
-                        .cornerRadius(50)
-                        .padding(.vertical, 2)
                         
-                        Text("The factors are...")
-                            .fontDesign(.serif)
-                            .font(.system(size: 20))
-                            .padding(20)
+                        text("The factors are...", 20, 20, 20)
+                        answerBox(answer, 20)
                         
-                        Text(answerFactor.joined(separator: ", "))
-                            .fontDesign(.monospaced)
-                            .font(.system(size: 20))
-                            .fontDesign(.rounded)
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
                     case.LCM:
-                        Text("Get Least Common Multiple of")
-                            .fontDesign(.serif)
-                            .font(.system(size: 20))
-                            .padding(20)
+                        text("Get Least Common Multiple of", 20, 20, 20)
 
                         HStack {
-                            TextField("Integer One", text: $numberLcmOne)
-                                .fontDesign(.monospaced)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.purple)
-                                .background(.gray.opacity(0.2))
-                                .cornerRadius(50)
-                                .padding(.horizontal, 15)
-                                .padding(.vertical, 15)
-                            
-                            Text("and")
-                                .fontDesign(.serif)
-                                .font(.system(size: 20))
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, -15)
-                            
-                            TextField("Integer Two", text: $numberLcmTwo)
-                                .fontDesign(.monospaced)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.purple)
-                                .background(.gray.opacity(0.2))
-                                .cornerRadius(50)
-                                .padding(.horizontal, 15)
-                                .padding(.vertical, 15)
+                            textBox("Integer One", $textOne, 15, 15)
+                            text("and", 20, -15, 16)
+                            textBox("Integer Two", $textTwo, 15, 15)
                         }
                         
-                        Button("Get Answer", action: {
-                            answerLcm = calculateLcm(numberLcmOne, numberLcmTwo)
+                        button({
+                            answer = calculateLcm(textOne, textTwo)
                             UIApplication.shared.endEditing()
                         })
-                        .fontDesign(.serif)
-                        .fontWeight(.semibold)
-                        .buttonStyle(.bordered)
-                        .cornerRadius(50)
-                        .padding(.vertical, 2)
                         
-                        Text("The Least Common Multiple is...")
-                            .fontDesign(.serif)
-                            .font(.system(size: 20))
-                            .padding(20)
-                        
-                        Text(answerLcm)
-                            .fontDesign(.monospaced)
-                            .font(.system(size: 20))
-                            .fontDesign(.rounded)
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
+                        text("The Least Common Multiple is...", 20, 20, 20)
+                        answerBox(answer, 20)
                     }
                     
                 case .FOIL:
-                    Text("Enter Equation in form (Ax + B)(Cx + D)")
-                        .font(.system(size: 18))
-                        .fontDesign(.serif)
-                        .padding(20)
+                   text("Enter Equation in form (Ax + B)(Cx + D)", 18, 20, 20)
                     
-                    TextField("A Value", text: $aValueFoil)
-                        .fontDesign(.monospaced)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.purple)
-                        .background(.gray.opacity(0.2))
-                        .cornerRadius(50)
-                        .padding(.horizontal, 50)
-                        .padding(.vertical, 15)
+                    textBox("A Value", $textOne, 50, 15)
+                    textBox("B Value", $textTwo, 50, 15)
+                    textBox("C Value", $textThree, 50, 15)
+                    textBox("D Value", $textFour, 50, 15)
                     
-                    TextField("B Value", text: $bValueFoil)
-                        .fontDesign(.monospaced)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.purple)
-                        .background(.gray.opacity(0.2))
-                        .cornerRadius(50)
-                        .padding(.horizontal, 50)
-                        .padding(.vertical, 15)
-                    
-                    TextField("C Value", text: $cValueFoil)
-                        .fontDesign(.monospaced)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.purple)
-                        .background(.gray.opacity(0.2))
-                        .cornerRadius(50)
-                        .padding(.horizontal, 50)
-                        .padding(.vertical, 15)
-                    
-                    TextField("D Value", text: $dValueFoil)
-                        .fontDesign(.monospaced)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.purple)
-                        .background(.gray.opacity(0.2))
-                        .cornerRadius(50)
-                        .padding(.horizontal, 50)
-                        .padding(.vertical, 15)
-                    
-                    Button("Get Answer", action: {
-                        answerFoil = calculateFoil(aValueFoil, bValueFoil, cValueFoil, dValueFoil)
+                    button({
+                        answer = calculateFoil(textOne, textTwo, textThree, textFour)
                         UIApplication.shared.endEditing()
                     })
-                    .fontDesign(.serif)
-                    .fontWeight(.semibold)
-                    .buttonStyle(.bordered)
-                    .cornerRadius(50)
-                    .padding(.vertical, 2)
+
                     
-                    Text("The foiled form is...")
-                        .font(.system(size: 20))
-                        .fontDesign(.serif)
-                        .padding(10)
-                    
-                    Text(answerFoil.joined(separator: ""))
-                        .font(.system(size: 23))
-                        .fontDesign(.monospaced)
-                        .fontDesign(.rounded)
-                        .foregroundColor(.gray)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
+                    text("The foiled form is...", 20, 10, 10)
+                    answerBox(answer, 23)
                 }
                 
                 Spacer()

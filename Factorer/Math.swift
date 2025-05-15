@@ -38,7 +38,7 @@ func calculateFactorsInteger(_ num: Int) -> [Int] {
     return factors
 }
 
-func calculateQuadratic(_ a: String, _ b: String, _ c: String) -> [String] {
+func calculateQuadratic(_ a: String, _ b: String, _ c: String) -> String {
     
     var ansOne: String = ""
     var ansTwo: String = ""
@@ -50,11 +50,11 @@ func calculateQuadratic(_ a: String, _ b: String, _ c: String) -> [String] {
         bValue = bValid
         cValue = cValid
     } else {
-        return ["Invalid Input(s)"]
+        return "Invalid Input(s)"
     }
     
     if (aValue == 0) {
-        return ["A value cannot be 0"]
+        return "A value cannot be 0"
     }
     
     let rootDiscriminant = pow(Double(bValue), 2) - (4 * Double(aValue) * Double(cValue))
@@ -86,10 +86,10 @@ func calculateQuadratic(_ a: String, _ b: String, _ c: String) -> [String] {
         ansTwo = "x = -" + String(abs(round(finalRootNegative * 100) / 100))
     }
     
-    return [ansOne, ansTwo]
+    return ansOne + " , " + ansTwo
 }
 
-func calculateQuadraticImaginary(_ rootDiscriminant: Double) -> [String] {
+func calculateQuadraticImaginary(_ rootDiscriminant: Double) -> String {
     
     var finalAns: String = ""
     
@@ -105,7 +105,7 @@ func calculateQuadraticImaginary(_ rootDiscriminant: Double) -> [String] {
     
     finalAns = "x = " + equation + "/" + denominator
     
-    return [finalAns]
+    return finalAns
 }
 
 func calculateGcf(_ numOne: String, _ numTwo: String) -> String {
@@ -150,16 +150,16 @@ func calculateGcf(_ numOne: String, _ numTwo: String) -> String {
     return String(tempNum)
 }
 
-func calculateFactorsString(_ num: String) -> [String] {
+func calculateFactorsString(_ num: String) -> String {
     
     if let numValid = validateInput(num) {
         number = Int(numValid)
     } else {
-        return ["Invalid Input"]
+        return "Invalid Input"
     }
     
     if (number == 0) {
-        return ["No Factors"]
+        return "No Factors"
     }
     
     var factors: [String] = []
@@ -172,7 +172,7 @@ func calculateFactorsString(_ num: String) -> [String] {
             }
         }
     }
-    return factors
+    return factors.joined(separator: ", ")
 }
 
 func calculateLcm(_ numOne: String, _ numTwo: String) -> String {
@@ -229,7 +229,7 @@ func calculateLcm(_ numOne: String, _ numTwo: String) -> String {
     }
 }
 
-func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> [String] {
+func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> String {
     
     var finalA: String = ""
     var finalB: String = ""
@@ -244,34 +244,34 @@ func calculateFoil(_ a: String, _ b: String, _ c: String, _ d: String) -> [Strin
         cValue = cValid
         dValue = dValid
     } else {
-        return ["Invalid Input(s)"]
+        return "Invalid Input(s)"
     }
     
     if (aValue == 0 && cValue == 0) {
-        return ["A and C values cannot be 0"]
+        return "A and C values cannot be 0"
     } else if(aValue == 0){
-        return ["A value cannot be 0"]
+        return "A value cannot be 0"
     } else if (cValue == 0){
-        return ["C value cannot be 0"]
+        return "C value cannot be 0"
     }
     
-    aValue = aValue * cValue
-    bValue = (aValue * dValue) + (cValue * bValue)
-    cValue = bValue * dValue
+    let foilAValue = aValue * cValue
+    let foilBValue = (aValue * dValue) + (cValue * bValue)
+    let foilCValue = bValue * dValue
     
-    finalA = String(round(Double(aValue) * 100) / 100) + "x\u{00B2}"
+    finalA = String(round(Double(foilAValue) * 100) / 100) + "x\u{00B2}"
     
     if (bValue < 0) {
-        finalB = " - " + String(abs(round(Double(bValue) * 100) / 100)) + "x"
+        finalB = " - " + String(abs(round(Double(foilBValue) * 100) / 100)) + "x"
     } else {
-        finalB = " + " + String(round(Double(bValue) * 100) / 100) + "x"
+        finalB = " + " + String(round(Double(foilBValue) * 100) / 100) + "x"
     }
     
     if (cValue < 0) {
-        finalC = " - " + String(abs(round(Double(cValue) * 100) / 100))
+        finalC = " - " + String(abs(round(Double(foilCValue) * 100) / 100))
     } else {
-        finalC = " + " + String(round(Double(cValue) * 100) / 100)
+        finalC = " + " + String(round(Double(foilCValue) * 100) / 100)
     }
     
-    return [finalA, finalB, finalC]
+    return finalA + finalB + finalC
 }
